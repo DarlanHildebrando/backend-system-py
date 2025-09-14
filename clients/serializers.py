@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Client, Disability_Type
+from .models import ClientProfile, Disability_Type
+from authentication.models import CustomUser
+from authentication.serializers import CustomUserSerializer
 from django.contrib.auth.hashers import make_password
 from accessibility.models import Accessibility_Type, Accessbility_Registration
 from django.db import transaction
@@ -9,13 +11,13 @@ class AccessibilitySerializer(serializers.ModelSerializer):
         model = Accessbility_Registration
         fields = ["fk_id_tipo_acessibilidade"]
 
-class ClientSerializer(serializers.ModelSerializer):
+class ClientProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Client
+        model = ClientProfile
         fields = '__all__'
         extra_kwargs = {
-            "password": {"write_only": True}
-            }
+            "custom_user": {"required": False, "allow_null": True}
+        }
 
 class DisabilitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +38,8 @@ class DisabilitySerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 class RegisterCompletSerializer(serializers.Serializer):
-    client = ClientSerializer()
+    custom_user = CustomUserSerializer()
+    client_profile = ClientProfileSerializer()
     disability = DisabilitySerializer()
     accessibilities = serializers.PrimaryKeyRelatedField(
         queryset=Accessibility_Type.objects.all(),
@@ -45,12 +48,16 @@ class RegisterCompletSerializer(serializers.Serializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        client_data = validated_data.pop("client")
-        password = client_data.pop("password", None)
 
-        client_data["password"] = make_password(password)
+        user = validated_data.pop("custom_user")
+        password = user.pop("password")
+        user["password"] = make_password(password)
 
-        client = ClientSerializer().create(client_data)
+        user_created = CustomUser.objects.create(**user)
+
+        client_data = validated_data.pop("client_profile")
+        client_data["custom_user"] = user_created
+        client = ClientProfileSerializer().create(client_data)
 
         disability_data = validated_data.pop("disability")
         disability = Disability_Type.objects.create(cliente=client, **disability_data)
@@ -62,7 +69,8 @@ class RegisterCompletSerializer(serializers.Serializer):
             accessibilities.append(accessibility_created)
 
         return {
-            "client": client,
+            "custom_user": user_created,
+            "client_profile": client,
             "disability": disability,
-            "accessibilities": accessibilities
+            "accessibilities": accessibilities,
           }

@@ -34,7 +34,7 @@ class Accessbility_Registration(models.Model):
         related_name='accessibility_registration'
     )
     fk_id_cliente = models.ForeignKey(
-        "clients.Client",
+        "clients.ClientProfile",
         null=True,
         on_delete=models.CASCADE,
         related_name='client'

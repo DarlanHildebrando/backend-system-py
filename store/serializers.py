@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Product
-from clients.models import Client
+from clients.models import ClientProfile
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,7 +16,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         client = validated_data.pop("client")
-        client_data = Client.objects.get(id=client.id)
+        client_data = ClientProfile.objects.get(id=client.id)
         product_created = Product.objects.create(client=client_data, **validated_data)
 
         return product_created

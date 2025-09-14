@@ -21,7 +21,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('geminiAPI/', include('AI.urls')),
-    path('clientAPI/', include('clients.urls')),
+    path('clients/', include('clients.urls')),
+    path('companies/', include('companies.urls')),
     path('productAPI/', include('store.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
