@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .backends import CustomBackend
 from rest_framework_simplejwt.views import TokenRefreshView
-from .services import generate_token_and_set
+from .services import JWTAndCookieServices
 from rest_framework.permissions import AllowAny
 
 
@@ -15,7 +15,7 @@ class LoginView(APIView):
         user = CustomBackend.authenticate(email=login_id, password=password)
 
         if user is not None:
-           response = generate_token_and_set(user)
+           response = JWTAndCookieServices.generate_token_and_set(user)
 
            return response
 
