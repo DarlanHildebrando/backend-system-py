@@ -5,10 +5,12 @@ attrs==25.3.0
 cachetools==5.5.2
 certifi==2025.8.3
 charset-normalizer==3.4.3
-Django==5.2.5
+Django==5.2.6
+django-autoslug==1.9.9
 djangorestframework==3.16.1
 djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.28.0
+drf-writable-nested==0.7.2
 google-auth==2.40.3
 google-genai==1.32.0
 h11==0.16.0

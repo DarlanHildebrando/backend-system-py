@@ -1,7 +1,7 @@
-from .enumStore.inkluabottle.bottle_colors import Colors
-from .enumStore.inkluabottle.bottle_size import Size
-from .enumStore.inkluabottle.bottle_icons import Icons
-from .enumStore.inkluabottle.chassis import ChassisBox
+from .enumStore.colors import Colors
+from .enumStore.size import Size
+from .enumStore.icons import Icons
+from .enumStore.chassis import ChassisBox
 
 import requests
 import uuid
@@ -16,7 +16,7 @@ class ProductServiceTable:
 
         body_to_send = {
             "payload": {
-                "orderId": f"{uuid.uuid4()}",
+                "orderId": "INKLUA",
                 "order": {
                     "codigoProduto": 1,
                     "bloco1": {
@@ -24,25 +24,25 @@ class ProductServiceTable:
                         "lamina1": product_color.value,
                         "lamina2": product_icon.value["frontBlade"],
                         "lamina3": product_icon.value["rightBlade"],
-                        "padrao1": "1",
+                        "padrao1": "0",
                         "padrao2": product_size.value,
-                        "padrao3": "1"
+                        "padrao3": "0"
                     },
                     "bloco2": {
-                        "lamina1": 1,
-                        "lamina2": 1,
-                        "lamina3": 1,
-                        "padrao1": "1",
-                        "padrao2": "1",
-                        "padrao3": "1"
+                        "lamina1": 0,
+                        "lamina2": 0,
+                        "lamina3": 0,
+                        "padrao1": "0",
+                        "padrao2": "0",
+                        "padrao3": "0"
                     },
                     "bloco3": {
-                        "lamina1": 1,
-                        "lamina2": 1,
-                        "lamina3": 1,
-                        "padrao1": "1",
-                        "padrao2": "1",
-                        "padrao3": "1"
+                        "lamina1": 0,
+                        "lamina2": 0,
+                        "lamina3": 0,
+                        "padrao1": "0",
+                        "padrao2": "0",
+                        "padrao3": "0"
                     }
                 },
                 "sku": "KIT-01"

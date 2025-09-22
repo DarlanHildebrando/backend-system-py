@@ -39,7 +39,7 @@ class Product(models.Model):
     color = models.CharField(max_length=255, choices=ProductColor.choices)
     size = models.CharField(max_length=255, choices=ProductSize.choices)
     icon = models.CharField(max_length=255, choices=ProductIcon.choices, default='NoIcon')
-    client = models.ForeignKey("clients.Client", on_delete=models.CASCADE, related_name="product")
+    client = models.ForeignKey("clients.ClientProfile", on_delete=models.CASCADE, related_name="product")
 
     def __str__(self):
         return f"Produto {self.name} do cliente {self.client.nome}"

@@ -19,9 +19,9 @@ class Event(models.Model):
     destaque = models.BooleanField(default=False)
     slug = models.CharField(max_length=255)
     fk_empresa_id_empresa = models.ForeignKey(
-        "companies.Enterprise",
+        "companies.EnterpriseProfile",
         on_delete=models.CASCADE,
-        related_name='event'
+        related_name='events'
     )
 
     def __str__(self):
@@ -35,12 +35,12 @@ class Event_Evaluation(models.Model):
         related_name='event_evaluation'
     )
     fk_id_cliente = models.ForeignKey(
-        "clients.Client",
+        "clients.ClientProfile",
         on_delete=models.CASCADE,
         related_name='event_evaluation'
     )
     fk_id_empresa = models.ForeignKey(
-        "companies.Enterprise",
+        "companies.EnterpriseProfile",
         on_delete=models.CASCADE,
         related_name='event_evaluation'
     )

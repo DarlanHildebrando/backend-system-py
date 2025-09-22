@@ -1,18 +1,22 @@
 from django.db import models
+from autoslug import AutoSlugField
 import uuid
 
-class Enterprise(models.Model):
+class EnterpriseProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome = models.CharField(max_length=255)
-    logo = models.CharField(max_length=500)
-    banner = models.CharField(max_length=500)
-    sobre = models.TextField()
-    slug = models.CharField(max_length=255)
-    email = models.EmailField(max_length=319, unique=True)
+    logo = models.CharField(max_length=500, null=True)
+    banner = models.CharField(max_length=500, null=True)
+    sobre = models.TextField(null=True)
+    slug = AutoSlugField(populate_from='nome', unique=True)
     telefone = models.CharField(max_length=20)
-    cnpj = models.CharField(max_length=20)
-    stripe_account_id = models.CharField(max_length=59)
+    stripe_account_id = models.CharField(max_length=59, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
+    custom_user = models.OneToOneField(
+        "authentication.CustomUser",
+        on_delete=models.CASCADE,
+        related_name='enterprise_profile'
+    )
 
     def __str__(self):
         return self.nome

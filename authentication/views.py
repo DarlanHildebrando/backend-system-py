@@ -1,45 +1,32 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .backends import EmailBackend
-from rest_framework_simplejwt.tokens import RefreshToken
+from .backends import CustomBackend
 from rest_framework_simplejwt.views import TokenRefreshView
+from .services import JWTAndCookieServices
+from rest_framework.permissions import AllowAny
 
 
 class LoginView(APIView):
     def post(self, request):
-        email = request.data.get("email")
-        print("=====================================")
-        print(email)
+        login_id = request.data.get("email")
         password = request.data.get("password")
-        print("=====================================")
-        print(password)
 
-        user = EmailBackend.authenticate(email=email, password=password)
-
-        print(user)
+        user = CustomBackend.authenticate(email=login_id, password=password)
 
         if user is not None:
-           token = RefreshToken.for_user(user)
-
-           response = Response({"details": "Login realizado com sucesso!"}, status=status.HTTP_200_OK)
-
-           response.set_cookie(
-               key="access_token",
-               value=str(token.access_token),
-               httponly=True,
-               secure=True,
-               samesite="Strict"
-           )
+           response = JWTAndCookieServices.generate_token_and_set(user)
 
            return response
 
         return Response({"detail": "Credenciais inválidas"}, status=status.HTTP_400_BAD_REQUEST)   
 
 class LogoutView(APIView):
+    permission_classes = [AllowAny] 
     def post(self, request):
         response = Response({"message": "Logout realizado com sucesso!"}, status=status.HTTP_200_OK)
         response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
         return response
 
 class CookieJWTRefresh(TokenRefreshView):
