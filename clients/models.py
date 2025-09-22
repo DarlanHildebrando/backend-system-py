@@ -37,7 +37,7 @@ class Disability_Type(models.Model):
     )
 
     def __str__(self):
-        return self.fisica
+        return f"{self.id}"
 
 class Notification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

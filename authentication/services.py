@@ -1,7 +1,8 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
-
+from django.conf import settings
+import jwt
 
 class JWTAndCookieServices():
     @staticmethod
@@ -29,3 +30,14 @@ class JWTAndCookieServices():
             samesite="Strict"
         )
         return response
+    
+    @staticmethod
+    def JWT_decode(token):
+        try:
+            paylod = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            return Response({"message": "Token expirado!"})
+        except jwt.InvalidTokenError:
+            return Response({"message": "Token inválido!"})
+        
+        return paylod

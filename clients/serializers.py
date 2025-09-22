@@ -1,23 +1,15 @@
 from rest_framework import serializers
-from .models import ClientProfile, Disability_Type
+from .models import Disability_Type, ClientProfile
 from authentication.models import CustomUser
-from authentication.serializers import CustomUserSerializer
+from .services import Profile
+from backend.neutrals_serializers.users_serializers import CustomUserSerializer
 from django.contrib.auth.hashers import make_password
 from accessibility.models import Accessibility_Type, Accessbility_Registration
 from django.db import transaction
+import uuid
 
-class AccessibilitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Accessbility_Registration
-        fields = ["fk_id_tipo_acessibilidade"]
-
-class ClientProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ClientProfile
-        fields = '__all__'
-        extra_kwargs = {
-            "custom_user": {"required": False, "allow_null": True}
-        }
+import logging
+logger = logging.getLogger("clients")
 
 class DisabilitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,11 +29,20 @@ class DisabilitySerializer(serializers.ModelSerializer):
 
         read_only_fields = ["id"]
 
+class ClientProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientProfile
+        fields = '__all__'
+        extra_kwargs = {
+            "custom_user": {"required": False, "allow_null": True}
+        }
+
+
 class RegisterCompletSerializer(serializers.Serializer):
     custom_user = CustomUserSerializer()
     client_profile = ClientProfileSerializer()
-    disability = DisabilitySerializer()
-    accessibilities = serializers.PrimaryKeyRelatedField(
+    disability_type = DisabilitySerializer()
+    access_registration = serializers.PrimaryKeyRelatedField(
         queryset=Accessibility_Type.objects.all(),
         many=True
     )
@@ -59,11 +60,11 @@ class RegisterCompletSerializer(serializers.Serializer):
         client_data["custom_user"] = user_created
         client = ClientProfileSerializer().create(client_data)
 
-        disability_data = validated_data.pop("disability")
+        disability_data = validated_data.pop("disability_type")
         disability = Disability_Type.objects.create(cliente=client, **disability_data)
 
         accessibilities = []
-        accessibility_data = validated_data.pop("accessibilities")
+        accessibility_data = validated_data.pop("access_registration")
         for accessibility in accessibility_data:
             accessibility_created = Accessbility_Registration.objects.create(fk_id_tipo_acessibilidade=accessibility, fk_id_cliente=client)
             accessibilities.append(accessibility_created)
@@ -71,6 +72,73 @@ class RegisterCompletSerializer(serializers.Serializer):
         return {
             "custom_user": user_created,
             "client_profile": client,
-            "disability": disability,
-            "accessibilities": accessibilities,
+            "disability_type": disability,
+            "access_registration": accessibilities,
           }
+
+class GetClientProfileSerializer(serializers.ModelSerializer):
+    disability_type = DisabilitySerializer()
+    
+    class Meta:
+        model = ClientProfile
+        fields = ["id", 
+                  "nome",
+                  "telefone",
+                  "imagem",
+                  "banner",
+                  "biografia",
+                  "inklua_coins",
+                  "aceitaTermos",
+                  "disability_type",]
+        extra_kwargs = {
+            "custom_user": {"required": False, "allow_null": True}
+        }
+
+class GetProfileSerializer(serializers.ModelSerializer):
+    client_profile = GetClientProfileSerializer()
+
+    class Meta:
+        model = CustomUser
+        fields = ["id", 
+                  "username",
+                  "email",
+                  "user_type",
+                  "client_profile",
+                ]
+
+
+class PatchProfileSerializer(serializers.ModelSerializer):
+    disability_type = DisabilitySerializer()
+
+    class Meta:
+        model = ClientProfile
+        fields = ["id", 
+                  "nome",
+                  "telefone",
+                  "imagem",
+                  "banner",
+                  "biografia",
+                  "inklua_coins",
+                  "aceitaTermos",
+                  "disability_type",
+                  ]
+        extra_kwargs = {
+            "custom_user": {"required": False, "allow_null": True}
+        }
+
+class PatchUserSerializer(serializers.ModelSerializer):
+    client_profile = PatchProfileSerializer()
+    class Meta:
+        model = CustomUser
+        fields = ["id", 
+                  "username",
+                  "email",
+                  "user_type",
+                  "client_profile"
+                ]
+        
+    def update(self, instance, validated_data):
+        print("==================================================================")
+        profile = Profile.updateProfile(validated_data)
+
+        return instance

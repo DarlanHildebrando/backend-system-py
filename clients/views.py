@@ -1,4 +1,4 @@
-from .serializers import RegisterCompletSerializer
+from .serializers import RegisterCompletSerializer, GetProfileSerializer, PatchUserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,13 +6,18 @@ from authentication.services import JWTAndCookieServices
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from authentication.models import CustomUser
+from accessibility.models import Accessbility_Registration
+from .services import Profile
+import logging
+
+logger = logging.getLogger("clients")
 
 class RegisterClientView(APIView):
     permission_classes = [AllowAny]
-    @extend_schema(
-        request=RegisterCompletSerializer,
-        responses={201: RegisterCompletSerializer}
-    )
+    # @extend_schema(
+    #     request=RegisterCompletSerializer,
+    #     responses={201: RegisterCompletSerializer}
+    # )
     def post(self, request):
         serializer = RegisterCompletSerializer(data=request.data)
         if serializer.is_valid():
@@ -26,5 +31,24 @@ class RegisterClientView(APIView):
 class ClientProfileView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        token = request.COOKIES.get("access_token")
-        return Response(token, status=status.HTTP_200_OK)
+        user = Profile.return_user(request)
+
+        serializer = GetProfileSerializer(user)
+        profile_data = serializer.data.copy()
+
+        profile_complete = Profile.assemble_profile(profile_data, user)
+
+        return Response(profile_complete, status=status.HTTP_200_OK)
+    
+    def patch(self, request):
+        user = Profile.return_user(request)
+
+        serializer = PatchUserSerializer(user, data=request.data, partial=True)
+        # acc = Accessbility_Registration.objects.filter(id__in=request.data["access_registration"]["delete"]).delete()
+        # logger.info("====================================================")
+        # logger.info(acc)
+        
+        
+        serializer.is_valid(raise_exception=True)
+
+        return Response(user.id, status=status.HTTP_200_OK)

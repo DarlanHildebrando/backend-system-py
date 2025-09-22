@@ -31,13 +31,13 @@ class Accessbility_Registration(models.Model):
     fk_id_tipo_acessibilidade = models.ForeignKey(
         "accessibility.Accessibility_Type",
         on_delete=models.CASCADE,
-        related_name='accessibility_registration'
+        related_name='access_registration'
     )
     fk_id_cliente = models.ForeignKey(
         "clients.ClientProfile",
         null=True,
         on_delete=models.CASCADE,
-        related_name='client'
+        related_name='access_registration'
     )
     fk_id_evento = models.ForeignKey(
         "events.Event",
