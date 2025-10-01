@@ -10,9 +10,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  backend:
+  backend-py:
     build: .
-    container_name: backend
+    container_name: backend-py
     ports:
       - "8000:8000"
     environment:

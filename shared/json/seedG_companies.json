@@ -1,0 +1,95 @@
+[
+    {
+    "custom_user": {
+        "email": "contato@universidadeeventos.com.br",
+        "password": "123456",
+        "user_type": "ENTERPRISE",
+        "first_name": "Universidade Eventos",
+        "last_name": null
+        },
+    "enterprise_profile": {
+        "cnpj": "12.345.678/0001-90",
+        "sobre": "Empresa especializada em organizar eventos acadêmicos, universitários, palestras e formaturas.",
+        "telefone": "+55 (11) 91234-5678",
+        "logo": "https://fakeimg.pl/200x200/?text=Universidade+Eventos",
+        "banner": "https://fakeimg.pl/1200x400/?text=Universidade+Eventos"
+    }
+},
+{
+    "custom_user": {
+        "email": "suporte@summitbusiness.com.br",
+        "password": "123456",
+        "user_type": "ENTERPRISE",
+        "first_name": "Summit & Business Group",
+        "last_name": null
+        },
+    "enterprise_profile": {
+        "cnpj": "23.456.789/0001-01",
+        "sobre": "Organização focada em conferências, fóruns corporativos e encontros empresariais.",
+        "telefone": "+55 (21) 97654-3210",
+        "logo": "https://fakeimg.pl/200x200/?text=Summit+Business",
+        "banner": "https://fakeimg.pl/1200x400/?text=Summit+Business"
+    }
+},
+{
+    "custom_user": {
+        "email": "atendimento@culturaearte.com.br",
+        "password": "123456",
+        "user_type": "ENTERPRISE",
+        "first_name": "Cultura e Arte Produções",
+        "last_name": null
+        },
+    "enterprise_profile": {
+        "cnpj": "34.567.890/0001-12",
+        "sobre": "Produtora cultural dedicada a teatro, exposições, literatura e eventos artísticos.",
+        "telefone": "+55 (41) 93456-1122",
+        "logo": "https://fakeimg.pl/200x200/?text=Cultura+Arte",
+        "banner": "https://fakeimg.pl/1200x400/?text=Cultura+Arte"
+    }
+},{
+    "custom_user": {
+        "email": "eventos@megashow.com.br",
+        "password": "123456",
+        "user_type": "ENTERPRISE",
+        "first_name": "MegaShow Entretenimento",
+        "last_name": null
+        },
+    "enterprise_profile": {
+        "cnpj": "45.678.901/0001-23",
+        "sobre": "Empresa líder em shows nacionais, turnês de bandas e grandes festivais de música.",
+        "telefone": "+55 (31) 92345-8888",
+        "logo": "https://fakeimg.pl/200x200/?text=MegaShow",
+        "banner": "https://fakeimg.pl/1200x400/?text=MegaShow"
+    }
+},{
+    "custom_user": {
+        "email": "contato@gastroeventos.com.br",
+        "password": "123456",
+        "user_type": "ENTERPRISE",
+        "first_name": "Eventos Gastronômicos Brasil",
+        "last_name": null
+        },
+    "enterprise_profile": {
+        "cnpj": "56.789.012/0001-34",
+        "sobre": "Organização de feiras de gastronomia, encontros de vinhos, cervejas e cultura regional.",
+        "telefone": "+55 (48) 98765-4433",
+        "logo": "https://fakeimg.pl/200x200/?text=Gastro+Eventos",
+        "banner": "https://fakeimg.pl/1200x400/?text=Gastro+Eventos"
+    }
+},{
+    "custom_user": {
+        "email": "fashion@fla.com.br",
+        "password": "123456",
+        "user_type": "ENTERPRISE",
+        "first_name": "Fashion & Lifestyle Agency",
+        "last_name": null
+        },
+    "enterprise_profile": {
+        "cnpj": "67.890.123/0001-45",
+        "sobre": "Agência especializada em desfiles de moda, tendências e eventos de lifestyle.",
+        "telefone": "+55 (51) 95555-6677",
+        "logo": "https://fakeimg.pl/200x200/?text=Fashion+Agency",
+        "banner": "https://fakeimg.pl/1200x400/?text=Fashion+Agency"
+    }
+}
+]

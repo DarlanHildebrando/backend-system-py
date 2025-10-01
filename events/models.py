@@ -1,6 +1,86 @@
 from django.db import models
 import uuid
 
+class Modalities(models.TextChoices):
+    inteira = 'INTEIRA', 'Inteira'
+    meia = 'MEIA', 'Meia'
+
+
+
+
+class EventAndCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fk_id_categoria = models.ForeignKey(
+        "events.Category",
+        on_delete=models.CASCADE,
+        related_name='event_and_category'
+    )
+    fk_id_evento = models.ForeignKey(
+        "events.Event",
+        on_delete=models.CASCADE,
+        related_name='event_and_category'
+    )
+
+class EventAndHashtag(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    fk_id_hashtag = models.ForeignKey(
+        "events.Hashtag",
+        on_delete=models.CASCADE,
+        related_name='event_and_hashtag'
+    )
+    fk_id_evento = models.ForeignKey(
+        "events.Event",
+        on_delete=models.CASCADE,
+        related_name='event_and_hashtag'
+    )
+
+class Hashtag(models.Model):
+    nome = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.nome
+    
+class Category(models.Model):
+    nome = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nome
+
+
+class SaleTickets(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    data_criacao = models.DateTimeField()
+    checkout_session_id = models.CharField(max_length=70)
+    clienteId_cliente = models.ForeignKey(
+        "clients.ClientProfile",
+        on_delete=models.CASCADE,
+        related_name='sales'
+    )
+    empresaId_empresa = models.ForeignKey(
+        "companies.EnterpriseProfile",
+        on_delete=models.CASCADE,
+        related_name='sales'
+    )
+
+
+class EventTicket(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nome = models.CharField(max_length=100)
+    modalidade = models.CharField(max_length=100, choices=Modalities.choices)
+    valor_receber = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_receber = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_receber = models.DecimalField(max_digits=10, decimal_places=2)
+    quantidade_max_venda = models.IntegerField()
+    data_inicio = models.DateTimeField()
+    data_fim = models.DateTimeField()
+    fk_id_evento = models.ForeignKey(
+        "events.Event",
+        on_delete=models.CASCADE,
+        related_name='ticket'
+    )
+    price_id = models.CharField(max_length=64)
+    
+
 class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome = models.CharField(max_length=100)
@@ -50,6 +130,21 @@ class Event_Evaluation(models.Model):
 
     def __str__(self):
         return self.data
+
+class Comment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    comentario = models.CharField(max_length=500)
+    data_criacao = models.DateTimeField()
+    fk_cliente_id_cliente = models.ForeignKey(
+        "clients.ClientProfile",
+        on_delete=models.CASCADE,
+        related_name="comment"
+    )
+    fk_evento_id_evento = models.ForeignKey(
+        "events.Event",
+        on_delete=models.CASCADE,
+        related_name='comment'
+    )
 
 
 

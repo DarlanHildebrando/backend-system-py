@@ -49,9 +49,10 @@ INSTALLED_APPS = [
     'companies',
     'events',
     'store',
+    'shared',
     'authentication',
     'drf_spectacular',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
 
 ]
 
@@ -72,7 +73,7 @@ SIMPLE_JWT = {
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', 
-    'authentication.backends.EmailOrCnpjBackend',
+    'authentication.backends.CustomBackend',
 ]
 
 MIDDLEWARE = [
@@ -108,7 +109,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if HOST_DB == "db":
+if HOST_DB == "localhost":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',

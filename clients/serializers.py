@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from .models import Disability_Type, ClientProfile
 from authentication.models import CustomUser
+from authentication.serializers import CustomUserSerializer
 from .services import Profile
-from backend.neutrals_serializers.users_serializers import CustomUserSerializer
 from django.contrib.auth.hashers import make_password
 from accessibility.models import Accessibility_Type, Accessbility_Registration
 from django.db import transaction
@@ -82,13 +82,11 @@ class GetClientProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientProfile
         fields = ["id", 
-                  "nome",
                   "telefone",
                   "imagem",
                   "banner",
                   "biografia",
                   "inklua_coins",
-                  "aceitaTermos",
                   "disability_type",]
         extra_kwargs = {
             "custom_user": {"required": False, "allow_null": True}
@@ -113,7 +111,6 @@ class PatchProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientProfile
         fields = ["id", 
-                  "nome",
                   "telefone",
                   "imagem",
                   "banner",
