@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import EnterpriseProfile
 from authentication.models import CustomUser
-# from authentication.serializers import CustomUserSerializer
+from authentication.serializers import CustomUserSerializer
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
 
@@ -15,7 +15,7 @@ class EnterpriseProfileSerializer(serializers.ModelSerializer):
 
 
 class EntRegisterCompletSerializer(serializers.Serializer):
-    # custom_user = CustomUserSerializer()
+    custom_user = CustomUserSerializer()
     enterprise_profile = EnterpriseProfileSerializer()
 
     @transaction.atomic

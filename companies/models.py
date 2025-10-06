@@ -4,11 +4,11 @@ import uuid
 
 class EnterpriseProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nome = models.CharField(max_length=255)
+    cnpj = models.CharField(max_length=18, unique=True, null=True)
     logo = models.CharField(max_length=500, null=True)
     banner = models.CharField(max_length=500, null=True)
     sobre = models.TextField(null=True)
-    slug = AutoSlugField(populate_from='nome', unique=True)
+    slug = AutoSlugField(populate_from='get_slug_source')
     telefone = models.CharField(max_length=20)
     stripe_account_id = models.CharField(max_length=59, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)
@@ -19,7 +19,10 @@ class EnterpriseProfile(models.Model):
     )
 
     def __str__(self):
-        return self.nome
+        return self.slug
+    
+    def get_slug_source(self):
+        return self.custom_user.first_name
     
 
 

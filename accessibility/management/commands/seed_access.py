@@ -6,6 +6,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
+        self.stdout.write(self.style.MIGRATE_HEADING("Criando Acessibilidades..."))
+
         accessibility_to_create = [
             # // FISICA
             { "nome": "Rampas de acesso", "descricao": "Estruturas inclinadas para substituir escadas e facilitar o acesso de cadeiras de rodas", "categoria": "FISICA" },
@@ -71,4 +73,4 @@ class Command(BaseCommand):
         for accessibility in accessibility_to_create:
             accessibility_created = Accessibility_Type.objects.create(**accessibility)
 
-            self.stdout.write(self.style.SUCCESS(f"\nAcessibilidade criada: {accessibility_created.nome} ; Categoria: {accessibility_created.categoria} ; Descrição: {accessibility_created.descricao}"))
+            self.stdout.write(self.style.HTTP_INFO(f"\nAcessibilidade criada: {accessibility_created.nome} ; Categoria: {accessibility_created.categoria} ; Descrição: {accessibility_created.descricao}"))

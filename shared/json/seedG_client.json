@@ -1,0 +1,89 @@
+[
+        {
+        "custom_user": {
+            "email": "thay4@gmail.com",
+            "password": "123456",
+            "user_type": "CLIENT",
+            "first_name": "Thaynara",
+            "last_name": "Aparecida",
+            "aceita_termos": true
+        },
+        "client_profile": {
+            "biografia": "biografia legal"
+        },
+        "disability_type": {
+                "fisica": false,
+                "auditiva": true,
+                "visual": false,
+                "comunicativa": true,
+                "cognitiva": false,
+                "outra": true,
+                "nao_possuo": false,
+                "nao_comentar": false,
+                "outra_texto": "TDAH, IMPERATIVISMO, HIPERFOCO"
+            },
+            "access_registration": [
+                1,
+                6,
+                7
+        ] 
+    },
+        {
+        "custom_user": {
+            "email": "joao@gmail.com",
+            "password": "123456",
+            "user_type": "CLIENT",
+            "first_name": "João",
+            "last_name": "Tester",
+            "aceita_termos": true
+        },
+        "client_profile": {
+            "biografia": "biografia legal"
+        },
+        "disability_type": {
+                "fisica": true,
+                "auditiva": false,
+                "visual": false,
+                "comunicativa": false,
+                "cognitiva": false,
+                "outra": false,
+                "nao_possuo": false,
+                "nao_comentar": false,
+                "outra_texto": null
+            },
+            "access_registration": [
+                2,
+                5,
+                6
+        ] 
+    },
+        {
+        "custom_user": {
+            "email": "jaja@gmail.com",
+            "password": "123456",
+            "user_type": "CLIENT",
+            "first_name": "Jailton",
+            "last_name": "do Café",
+            "aceita_termos": true
+        },
+        "client_profile": {
+            "biografia": "Faço um cafezinho top."
+        },
+        "disability_type": {
+                "fisica": false,
+                "auditiva": false,
+                "visual": false,
+                "comunicativa": true,
+                "cognitiva": false,
+                "outra": false,
+                "nao_possuo": false,
+                "nao_comentar": false,
+                "outra_texto": null
+            },
+            "access_registration": [
+                7,
+                2,
+                1
+        ] 
+    }
+]

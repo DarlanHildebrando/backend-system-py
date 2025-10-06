@@ -3,13 +3,11 @@ import uuid
 
 class ClientProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    nome = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15, blank=True, null=True)
     imagem = models.CharField(max_length=15, blank=True, null=True)
     banner = models.CharField(max_length=500, blank=True, null=True)
     biografia = models.CharField(max_length=500, blank=True, null=True)
     inklua_coins = models.IntegerField(default=0)
-    aceitaTermos = models.BooleanField(default=False)
     custom_user = models.OneToOneField(
         "authentication.CustomUser",
         on_delete=models.CASCADE,
@@ -17,7 +15,29 @@ class ClientProfile(models.Model):
     )
 
     def __str__(self):
-        return self.nome
+        return f"{self.custom_user.first_name}"
+
+class ClientTicket(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    codigo = models.UUIDField(default=uuid.uuid4)
+    data_criacao = models.DateTimeField()
+    salfk_id_vendae = models.ForeignKey(
+        "events.SaleTickets",
+        on_delete=models.CASCADE,
+        related_name='client_ticket'
+    )
+    fk_id_ingresso = models.ForeignKey(
+        "events.EventTicket",
+        on_delete=models.CASCADE,
+        related_name='client_ticket'
+    )
+    fk_id_cliente = models.ForeignKey(
+        "clients.ClientProfile",
+        on_delete=models.CASCADE,
+        related_name='ticket'
+    )
+
+
 
 class Disability_Type(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -65,3 +85,14 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.data_criacao
+
+class VisualConfiguration(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    codigo_alteracao =  models.CharField(max_length=255)
+    value = models.IntegerField()
+    nome_select = models.CharField(max_length=50)
+    fk_id_cliente = models.ForeignKey(
+        "clients.ClientProfile",
+        on_delete=models.CASCADE,
+        related_name='client'
+    )

@@ -46,6 +46,12 @@ class Accessbility_Registration(models.Model):
         related_name='event'
     )
 
+    def __str__(self):
+        return f"{
+            f"Evento {self.fk_id_evento.nome} possui acessibilidade:" if self.fk_id_evento 
+            is not None else 
+            f"Cliente {self.fk_id_cliente} deseja acessibilidade:"} {self.fk_id_tipo_acessibilidade.nome}"
+
 class Accessibility_Assessment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     fk_id_tipo_acessibilidade = models.ForeignKey(

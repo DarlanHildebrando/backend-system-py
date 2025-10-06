@@ -9,9 +9,12 @@ class UserType(models.TextChoices):
 
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    username = None
     email = models.EmailField(max_length=100, unique=True)
-    cnpj = models.CharField(max_length=18, unique=True, null=True)
     user_type = models.CharField(max_length=50, choices=UserType.choices)
+    aceitaTermos = models.BooleanField(default=False)
+    username = models.CharField(max_length=150, null=True)
+    first_name = models.CharField(max_length=100, null=False)
+    last_name = models.CharField(max_length=100, null=True)
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
