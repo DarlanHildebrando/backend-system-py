@@ -203,7 +203,7 @@
         "cidade": "Florianópolis",
         "bairro": "Vargem Pequena",
         "logradouro": "Servidão do Engenho",
-        "complemento": "",
+        "complemento": "Club Inklua",
         "numero": "1300",
         "destaque": "False"
     },
@@ -747,8 +747,8 @@
         "cidade": "São Paulo",
         "bairro": "Jardim Paulista",
         "logradouro": "Avenida Brigadeiro Luís Antônio",
-        "complemento": null,
-        "numero": null,
+        "complemento": "Club defaultSilva",
+        "numero": "321",
         "destaque": "False"
     },
     {
@@ -763,8 +763,8 @@
         "cidade": "São Paulo",
         "bairro": "Jardim Paulista",
         "logradouro": "Avenida Brigadeiro Luís Antônio",
-        "complemento": null,
-        "numero": null,
+        "complemento": "Club Not Null",
+        "numero": "90",
         "destaque": "False"
     }
 ]

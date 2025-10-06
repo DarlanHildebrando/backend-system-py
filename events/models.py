@@ -21,6 +21,9 @@ class EventAndCategory(models.Model):
         related_name='event_and_category'
     )
 
+    def __str__(self):
+        return f"Evento {self.fk_id_evento.nome} relacionado a categoria {self.fk_id_categoria.nome}"
+
 class EventAndHashtag(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     fk_id_hashtag = models.ForeignKey(
@@ -33,6 +36,9 @@ class EventAndHashtag(models.Model):
         on_delete=models.CASCADE,
         related_name='event_and_hashtag'
     )
+
+    def __str__(self):
+        return f"Evento {self.fk_id_evento.nome} relacionado a hashtag {self.fk_id_hashtag.nome}"
 
 class Hashtag(models.Model):
     nome = models.CharField(max_length=150)
@@ -68,8 +74,7 @@ class EventTicket(models.Model):
     nome = models.CharField(max_length=100)
     modalidade = models.CharField(max_length=100, choices=Modalities.choices)
     valor_receber = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_receber = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_receber = models.DecimalField(max_digits=10, decimal_places=2)
+    valor_comprador = models.CharField(max_length=12, default='')
     quantidade_max_venda = models.IntegerField()
     data_inicio = models.DateTimeField()
     data_fim = models.DateTimeField()
@@ -79,6 +84,9 @@ class EventTicket(models.Model):
         related_name='ticket'
     )
     price_id = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f"Ingresso {self.nome} do evento {self.fk_id_evento.nome}"
     
 
 class Event(models.Model):
@@ -105,7 +113,7 @@ class Event(models.Model):
     )
 
     def __str__(self):
-        return self.nome
+        return f"Evento {self.nome} da empresa {self.fk_empresa_id_empresa.slug}"
 
 class Event_Evaluation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
