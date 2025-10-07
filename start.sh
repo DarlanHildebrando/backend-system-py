@@ -14,6 +14,9 @@ echo "Inicializando backend"
 echo "Aplicando migrações"
 python manage.py migrate
 
+echo "Populando banco de dados"
+python manage.py seed_global
+
 echo "Rodando o servidor"
 python manage.py runserver 0.0.0.0:8000
 
