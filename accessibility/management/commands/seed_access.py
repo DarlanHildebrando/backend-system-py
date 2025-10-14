@@ -71,6 +71,10 @@ class Command(BaseCommand):
         ]
 
         for accessibility in accessibility_to_create:
-            accessibility_created = Accessibility_Type.objects.create(**accessibility)
-
-            self.stdout.write(self.style.HTTP_INFO(f"\nAcessibilidade criada: {accessibility_created.nome} ; Categoria: {accessibility_created.categoria} ; Descrição: {accessibility_created.descricao}"))
+            obj, created = Accessibility_Type.objects.get_or_create(
+                nome=accessibility["nome"], defaults=accessibility
+                )
+            if created:
+                self.stdout.write(self.style.HTTP_INFO(f"\nAcessibilidade criada: {obj.nome} ; Categoria: {obj.categoria} ; Descrição: {obj.categoria}"))
+            else:
+                self.stdout.write(self.style.WARNING(f"Acessibilidade {obj.nome} já existe!")) 

@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:15
+    container_name: dbi
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -10,9 +11,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  backend-py:
+  backendp:
     build: .
-    container_name: backend-py
+    container_name: backendp
     ports:
       - "8000:8000"
     environment:
