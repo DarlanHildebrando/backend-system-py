@@ -1,20 +1,23 @@
 #!/bin/sh
 
-echo "Esperando o banco de dados..."
+echo "waiting the database to be ready..."
 
 until pg_isready -h "$POSTGRES_HOST" -p 5432 -U "$POSTGRES_USER" > /dev/null 2>&1; do
-  sleep 1
-  echo "Esperando"
-done
+sleep 1
+echo "waiting..."
+done    
 
-echo "Banco de dados pronto! Iniciando backend..."
+echo "database is ready!, inicializing backend system..."
 
-echo "Inicializando backend"
+echo "incializing backend system..."
 
-echo "Aplicando migrações"
+echo "apllying database migrations..."
 python manage.py migrate
 
-echo "Rodando o servidor"
+echo "populating database"
+python manage.py seed_global
+
+echo "running server..."
 python manage.py runserver 0.0.0.0:8000
 
-echo "Servidor rodando na porta 8000!"
+echo "server initialized in the port 8000"

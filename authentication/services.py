@@ -18,16 +18,16 @@ class JWTAndCookieServices():
             key="access_token",
             value=str(token.access_token),
             httponly=True,
-            secure=True,
-            samesite="Strict"
+            secure=False,
+            samesite="None"
         )
 
         response.set_cookie(
             key="refresh_token",
             value=str(token),
             httponly=True,
-            secure=True,
-            samesite="Strict"
+            secure=False,
+            samesite="None"
         )
         return response
     
