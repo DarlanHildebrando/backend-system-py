@@ -14,12 +14,15 @@ class JWTAndCookieServices():
         else:
             response = Response({"message": "Autenticado!"}, status=status.HTTP_200_OK)    
 
+        max_age = 60 * 60 * 24 * 7  # 7 dias
+
         response.set_cookie(
             key="access_token",
             value=str(token.access_token),
             httponly=True,
             secure=False,
-            samesite="None"
+            samesite="Lax",
+            max_age=max_age
         )
 
         response.set_cookie(
@@ -27,7 +30,8 @@ class JWTAndCookieServices():
             value=str(token),
             httponly=True,
             secure=False,
-            samesite="None"
+            samesite="Lax",
+            max_age=max_age
         )
         return response
     

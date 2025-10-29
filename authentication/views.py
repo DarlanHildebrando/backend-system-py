@@ -4,7 +4,7 @@ from rest_framework import status
 from .backends import CustomBackend
 from rest_framework_simplejwt.views import TokenRefreshView
 from .services import JWTAndCookieServices
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
 class LoginView(APIView):
@@ -50,3 +50,34 @@ class CookieJWTRefresh(TokenRefreshView):
         )
 
         return response
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if user:
+            if user.user_type == 'CLIENT':
+                return Response(
+                    {
+                        "user_id": user.id,
+                        "user_name": user.email,
+                        "user_profile": user.client_profile.id
+                    }, 
+                    status=status.HTTP_200_OK
+                )
+            elif user.user_type == 'ENTERPRISE':
+                return Response(
+                    {
+                        "user_id": user.id,
+                        "user_email": user.email,
+                        "user_profile": user.enterprise_profile.id,
+                        "cnpj": user.enterprise_profile.cnpj
+                    }, 
+                    status=status.HTTP_200_OK
+                ) 
+        else:
+            return Response(
+                'Não deu certo',
+                status=status.HTTP_400_BAD_REQUEST
+            )
