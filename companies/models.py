@@ -8,7 +8,7 @@ class EnterpriseProfile(models.Model):
     logo = models.CharField(max_length=500, null=True)
     banner = models.CharField(max_length=500, null=True)
     sobre = models.TextField(null=True)
-    slug = AutoSlugField(populate_from='get_slug_source')
+    slug = AutoSlugField(populate_from='get_slug_source', unique=True)
     telefone = models.CharField(max_length=20)
     stripe_account_id = models.CharField(max_length=59, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)

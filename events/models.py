@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from autoslug import AutoSlugField
 
 class Modalities(models.TextChoices):
     inteira = 'INTEIRA', 'Inteira'
@@ -105,7 +106,7 @@ class Event(models.Model):
     complemento = models.CharField(max_length=100)
     numero = models.CharField(max_length=10)
     destaque = models.BooleanField(default=False)
-    slug = models.CharField(max_length=255)
+    slug = AutoSlugField(populate_from='nome', unique=True)
     fk_empresa_id_empresa = models.ForeignKey(
         "companies.EnterpriseProfile",
         on_delete=models.CASCADE,
