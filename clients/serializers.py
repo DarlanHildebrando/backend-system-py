@@ -87,6 +87,7 @@ class GetClientProfileSerializer(serializers.ModelSerializer):
                   "banner",
                   "biografia",
                   "inklua_coins",
+                  "notification",
                   "disability_type",]
         extra_kwargs = {
             "custom_user": {"required": False, "allow_null": True}
@@ -99,6 +100,7 @@ class GetProfileSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ["id", 
                   "username",
+                  "first_name",
                   "email",
                   "user_type",
                   "client_profile",

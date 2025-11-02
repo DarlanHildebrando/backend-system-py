@@ -33,7 +33,7 @@
             "email": "joao@gmail.com",
             "password": "123456",
             "user_type": "CLIENT",
-            "first_name": "João",
+            "first_name": "João Tester",
             "last_name": "Tester",
             "aceita_termos": true
         },
