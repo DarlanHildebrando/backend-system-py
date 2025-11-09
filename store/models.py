@@ -1,6 +1,18 @@
 from django.db import models
 import uuid
 
+class ProductPhrase(models.TextChoices):
+    noPhrase = 'NOPHRASE', 'No phrase'
+    personalized = 'FP', 'Personalized'
+    f1 = 'F1', 'Faça a diferença, inKlua!'
+    f2 = 'F2', 'Todos merecem viver grandes experiências'
+    f3 = 'F3', '#InklusaoParaTodos'
+
+class ProductPhraseTyphografy(models.TextChoices):
+    Standard = "STANDARD", "Standard"
+    Braille = "BRAILLE", "Braille"
+    Pixelated = "PIXELATED", "Pixelated"
+
 class ProductIcon(models.TextChoices):
     noIcon = 'NOICON', 'No Icon'
     ear = 'EAR', 'Ear'
@@ -39,6 +51,8 @@ class Product(models.Model):
     color = models.CharField(max_length=255, choices=ProductColor.choices)
     size = models.CharField(max_length=255, choices=ProductSize.choices)
     icon = models.CharField(max_length=255, choices=ProductIcon.choices, default='NoIcon')
+    typography = models.CharField(max_length=255, choices=ProductPhraseTyphografy.choices, default='Standard')
+    phrase = models.CharField(max_length=255, choices=ProductPhrase.choices, default='noPhrase')
     client = models.ForeignKey(
         "clients.ClientProfile", 
         on_delete=models.CASCADE, 

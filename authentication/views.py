@@ -61,7 +61,7 @@ class MeView(APIView):
                 return Response(
                     {
                         "user_id": user.id,
-                        "user_name": user.email,
+                        "user_email": user.email,
                         "user_profile": user.client_profile.id
                     }, 
                     status=status.HTTP_200_OK
@@ -78,6 +78,6 @@ class MeView(APIView):
                 ) 
         else:
             return Response(
-                'Não deu certo',
-                status=status.HTTP_400_BAD_REQUEST
+                {"message": "Usuário não logado!"},
+                status=status.HTTP_200_OK
             )

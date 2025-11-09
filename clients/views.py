@@ -1,4 +1,4 @@
-from .serializers import RegisterCompletSerializer, GetProfileSerializer, PatchUserSerializer
+from .serializers import RegisterCompletSerializer, GetProfileSerializer, PatchUserSerializer, ClientTicketsSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from authentication.models import CustomUser
 from accessibility.models import Accessbility_Registration
 from .services import Profile
+from .models import ClientTicket
 import logging
 
 logger = logging.getLogger("clients")
@@ -52,3 +53,11 @@ class ClientProfileView(APIView):
         serializer.is_valid(raise_exception=True)
 
         return Response(user.id, status=status.HTTP_200_OK)
+
+class ClientTicketsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk=None):
+        tickets = ClientTicket.objects.filter(fk_id_cliente=pk)
+        serializer = ClientTicketsSerializer(tickets, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

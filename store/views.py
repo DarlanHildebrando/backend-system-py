@@ -8,7 +8,10 @@ from .services import ProductServiceTable
 class ProductView(APIView):
     def post(self, request):
         serializer = ProductSerializer(data=request.data, many=True)
+
         if serializer.is_valid():
+            print("===================PRODUCT===================")
+            print(serializer.data)
             products_instance = serializer.save()
             for product in products_instance:
                 ProductServiceTable().AssembleForTable(product)

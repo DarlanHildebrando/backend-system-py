@@ -13,6 +13,17 @@ class EnterpriseProfileSerializer(serializers.ModelSerializer):
             "custom_user": {"required": False, "allow_null": True}
         }
 
+class EnterpriseProfileCompleteSerializer(serializers.ModelSerializer):
+    enterprise_profile = EnterpriseProfileSerializer()
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "enterprise_profile"
+        ]
 
 class EntRegisterCompletSerializer(serializers.Serializer):
     custom_user = CustomUserSerializer()

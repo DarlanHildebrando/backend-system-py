@@ -11,7 +11,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "color",
             "size",
             "icon",
-            "client"
+            "client",
+            "phrase",
+            "typography"
         ]
 
     def create(self, validated_data):

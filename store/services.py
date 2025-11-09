@@ -2,6 +2,8 @@ from .enumStore.colors import Colors
 from .enumStore.size import Size
 from .enumStore.icons import Icons
 from .enumStore.chassis import ChassisBox
+from .enumStore.phrases import Phrases
+from .enumStore.typography import Typographys
 
 import requests
 import uuid
@@ -13,6 +15,8 @@ class ProductServiceTable:
         product_icon = Icons[product.icon]
         product_size = Size[product.size]
         chassis = ChassisBox[product.name]
+        phrase_typography = Typographys[product.typography]
+        phrase = Phrases[product.phrase]
 
         body_to_send = {
             "payload": {
@@ -24,9 +28,9 @@ class ProductServiceTable:
                         "lamina1": product_color.value,
                         "lamina2": product_icon.value["frontBlade"],
                         "lamina3": product_icon.value["rightBlade"],
-                        "padrao1": "0",
+                        "padrao1": phrase.value,
                         "padrao2": product_size.value,
-                        "padrao3": "0"
+                        "padrao3": phrase_typography.value
                     },
                     "bloco2": {
                         "lamina1": 0,
@@ -50,7 +54,12 @@ class ProductServiceTable:
             "callbackUrl": "http://localhost:3333/callback"
         }
 
-        ProductServiceTable.SendToTable(body=body_to_send)
+        # ProductServiceTable.SendToTable(body=body_to_send)
+
+        print("======================BODY======================")
+        print(body_to_send)
+
+        return 'AAAAAAAAAAAAAAAAAAAA'
 
 
     @staticmethod

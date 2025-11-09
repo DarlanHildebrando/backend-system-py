@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from .models import Disability_Type, ClientProfile
+from .models import Disability_Type, ClientProfile, ClientTicket
 from authentication.models import CustomUser
 from authentication.serializers import CustomUserSerializer
 from .services import Profile
+from events.serializers import EventTicketSerializers
 from django.contrib.auth.hashers import make_password
 from accessibility.models import Accessibility_Type, Accessbility_Registration
 from django.db import transaction
@@ -10,6 +11,18 @@ import uuid
 
 import logging
 logger = logging.getLogger("clients")
+
+class ClientTicketsSerializer(serializers.ModelSerializer):
+    fk_id_ingresso = EventTicketSerializers()
+    class Meta:
+        model = ClientTicket
+        fields = [
+            "id",
+            "codigo",
+            "data_criacao",
+            "status",
+            "fk_id_ingresso"
+        ]
 
 class DisabilitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -78,6 +91,7 @@ class RegisterCompletSerializer(serializers.Serializer):
 
 class GetClientProfileSerializer(serializers.ModelSerializer):
     disability_type = DisabilitySerializer()
+    ticket = ClientTicketsSerializer(many=True, read_only=True)
     
     class Meta:
         model = ClientProfile
@@ -88,6 +102,7 @@ class GetClientProfileSerializer(serializers.ModelSerializer):
                   "biografia",
                   "inklua_coins",
                   "notification",
+                  "ticket",
                   "disability_type",]
         extra_kwargs = {
             "custom_user": {"required": False, "allow_null": True}

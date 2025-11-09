@@ -21,10 +21,11 @@ class ClientTicket(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     codigo = models.UUIDField(default=uuid.uuid4)
     data_criacao = models.DateTimeField()
+    status = models.CharField(max_length=30, default='INVÁLIDO')
     salfk_id_vendae = models.ForeignKey(
         "events.SaleTickets",
         on_delete=models.CASCADE,
-        related_name='client_ticket'
+        related_name='client_ticket_sale'
     )
     fk_id_ingresso = models.ForeignKey(
         "events.EventTicket",
@@ -36,6 +37,9 @@ class ClientTicket(models.Model):
         on_delete=models.CASCADE,
         related_name='ticket'
     )
+
+    def __str__(self):
+        return f"Ingresso {self.fk_id_ingresso.nome} do cliente {self.fk_id_cliente.custom_user.first_name}"
 
 
 
