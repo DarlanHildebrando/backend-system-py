@@ -5,6 +5,7 @@ from .backends import CustomBackend
 from rest_framework_simplejwt.views import TokenRefreshView
 from .services import JWTAndCookieServices
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken, ExpiredTokenError
 
 
 class LoginView(APIView):
@@ -37,7 +38,23 @@ class CookieJWTRefresh(TokenRefreshView):
         
         data = {"refresh": refresh_token}
         serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
+        
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ExpiredTokenError:
+            response = Response({"detail": "Refresh Token expirado!"}, status=status.HTTP_401_UNAUTHORIZED)
+
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
+            return response
+        except (TokenError, InvalidToken):
+            response = Response({"detail": "Token inválido."}, status=status.HTTP_401_UNAUTHORIZED)
+
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
+            return response
+        
         access_token = serializer.validated_data["access"]
 
         response = Response({"detail": "Token atualizado!"}, status=status.HTTP_200_OK)
