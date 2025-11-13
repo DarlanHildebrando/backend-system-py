@@ -9,9 +9,9 @@ class VisualConfigurationView(APIView):
     def post(self, request):
         user = get_object_or_404(ClientProfile, id=request.data.get("fk_id_cliente"))
         serializer = AccessibilityConfigSerializer(data=request.data)
-
+        print("=======================SERIALIZER====================")
         if serializer.is_valid():
-            serializer.save(fk_id_cliente_id=user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer.save(fk_id_cliente_id=user.id)
+            return Response(serializer.data, status=status.HTTP_201_CREATED     )
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)

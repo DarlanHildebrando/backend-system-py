@@ -94,7 +94,7 @@ class VisualConfiguration(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     codigo_alteracao =  models.CharField(max_length=255)
     value = models.IntegerField()
-    nome_select = models.CharField(max_length=50)
+    nome_select = models.CharField(max_length=50, null=True)
     fk_id_cliente = models.ForeignKey(
         "clients.ClientProfile",
         on_delete=models.CASCADE,
