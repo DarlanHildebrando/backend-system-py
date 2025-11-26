@@ -59,4 +59,16 @@ class Product(models.Model):
         related_name="product")
 
     def __str__(self):
-        return f"Produto {self.name} do cliente {self.client.nome}"
+        return f"Produto {self.name} do cliente {self.client}"
+    
+class SaleProduct(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    queue_order_id = models.CharField(max_length=255, editable=False)
+    sale_date = models.DateTimeField()
+    status = models.CharField(max_length=100, null=False)   
+    status_start_date = models.DateTimeField()
+    status_finished_date = models.DateTimeField()
+    client = models.ForeignKey(
+        "clients.ClientProfile",
+        on_delete=models.CASCADE,
+        related_name="sale_product")

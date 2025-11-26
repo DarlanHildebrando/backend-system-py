@@ -79,7 +79,7 @@ class Notification(models.Model):
         "events.Event",
         on_delete=models.CASCADE,
         related_name='notification'
-    )
+    )   
     lida = models.BooleanField(default=False)
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_evento = models.DateTimeField()
@@ -100,3 +100,4 @@ class VisualConfiguration(models.Model):
         on_delete=models.CASCADE,
         related_name='client'
     )
+

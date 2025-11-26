@@ -7,9 +7,10 @@ from .enumStore.typography import Typographys
 
 import requests
 import uuid
+import json
 
 class ProductServiceTable:
-    BASE_URL = "http://52.1.197.112:3000"
+    BASE_URL = "http://52.72.137.244:3000"
     def AssembleForTable(self, product):
         product_color = Colors[product.color]
         product_icon = Icons[product.icon]
@@ -20,7 +21,7 @@ class ProductServiceTable:
 
         body_to_send = {
             "payload": {
-                "orderId": "INKLUA",
+                "orderId": f"INKLUA-{uuid.uuid4()}",
                 "order": {
                     "codigoProduto": 1,
                     "bloco1": {
@@ -54,10 +55,45 @@ class ProductServiceTable:
             "callbackUrl": "http://localhost:3333/callback"
         }
 
-        # ProductServiceTable.SendToTable(body=body_to_send)
+        response = ProductServiceTable.SendToTable(body=body_to_send)
+        if response.status_code == 201:
+            data = response.json()
 
-        print("======================BODY======================")
-        print(body_to_send)
+            url = f"{self.BASE_URL}/queue/items/{data['id']}"
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            try:
+                response = requests.get(url=url, headers=headers, timeout=10)
+                response.raise_for_status()
+
+                product_queue = response.json()
+                print("=======================PRODUCT QUEUE===========================")
+                print(product_queue['history'])
+
+                if len(product_queue['history']) == 0:
+
+                    for attemp in range(10):
+                        response = requests.get(url=url, headers=headers, timeout=10)
+                        response.raise_for_status()
+
+                        response.json()
+                        if len(response['history']) > 0:
+                            print(f"ATTEMP {attemp}")
+                            print(response)
+                            break
+
+                        print(f"ATTEMP {attemp}")
+                        print(response)
+
+
+    
+
+                return response
+            except requests.RequestException as e:
+                print(f"Error: {e}")
+                return None
 
         return 'AAAAAAAAAAAAAAAAAAAA'
 

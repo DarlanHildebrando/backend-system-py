@@ -8,6 +8,8 @@ services:
       POSTGRES_DB: inkluaticket
     ports:
       - "5432:5432"
+    mem_limit: 500m
+    mem_reservation: 100m
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -21,6 +23,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: inkluaticket
+    mem_limit: 1g
+    mem_reservation: 200m
     depends_on:
       - db    
 
