@@ -6,6 +6,8 @@ from .services import ProductServiceTable
 from django.shortcuts import get_object_or_404
 from .models import SaleProduct
 
+import time
+
 class ProductView(APIView):
     def post(self, request):
         serializer = ProductSerializer(data=request.data, many=True)
@@ -13,8 +15,15 @@ class ProductView(APIView):
         if serializer.is_valid():
             products_instance = serializer.save()
             for product in products_instance:
-                ProductServiceTable().AssembleForTable(product)
-                # sale = SaleProduct.objects.create()
+               product_id = ProductServiceTable().AssembleForTable(product)
+               time.sleep(4)
+               client_id = product.client
+               queue_product = ProductServiceTable().GetQueueProduct(product_id, client_id)
+               print("===============RETURNED================")
+               print(queue_product)
+               sale = SaleProduct.objects.create(**queue_product)
+               print("=========================SALE=====================")
+               print(sale.__dict__)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)

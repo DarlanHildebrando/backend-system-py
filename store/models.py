@@ -66,8 +66,8 @@ class SaleProduct(models.Model):
     queue_order_id = models.CharField(max_length=255, editable=False)
     sale_date = models.DateTimeField()
     status = models.CharField(max_length=100, null=False)   
-    status_start_date = models.DateTimeField()
-    status_finished_date = models.DateTimeField()
+    status_start_date = models.DateTimeField(null=True)
+    status_finished_date = models.DateTimeField(null=True)
     client = models.ForeignKey(
         "clients.ClientProfile",
         on_delete=models.CASCADE,

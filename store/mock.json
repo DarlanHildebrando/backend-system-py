@@ -1,0 +1,48 @@
+    {
+      "_id": "6924e63f5eaeefa9280c7a93",
+      "payload": {
+        "orderId": "INKLUA-343bc1a5-a37e-4cd3-9c3a-7037dfe662a9",
+        "order": {
+          "codigoProduto": 1,
+          "bloco1": {
+            "cor": 3,
+            "lamina1": 5,
+            "lamina2": 3,
+            "lamina3": 2,
+            "padrao1": "0",
+            "padrao2": "2",
+            "padrao3": "3"
+          },
+          "bloco2": {
+            "lamina1": 0,
+            "lamina2": 0,
+            "lamina3": 0,
+            "padrao1": "0",
+            "padrao2": "0",
+            "padrao3": "0"
+          },
+          "bloco3": {
+            "lamina1": 0,
+            "lamina2": 0,
+            "lamina3": 0,
+            "padrao1": "0", 
+            "padrao2": "0",
+            "padrao3": "0"
+          }
+        },
+        "sku": "KIT-01"
+      },
+      "callbackUrl": "http://localhost:3333/callback",
+      "status": "PENDING",
+      "progress": 0,
+      "etaSeconds": null,
+      "lockedAt": null,
+      "lockedBy": null,
+      "stageStartedAt": null,
+      "lastCallbackAt": null,
+      "callbackTries": 0,
+      "history": [],
+      "createdAt": "2025-11-24T23:11:59.653Z",
+      "updatedAt": "2025-11-24T23:11:59.653Z",
+      "__v": 0
+    }

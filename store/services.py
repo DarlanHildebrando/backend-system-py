@@ -8,6 +8,7 @@ from .enumStore.typography import Typographys
 import requests
 import uuid
 import json
+import time
 
 class ProductServiceTable:
     BASE_URL = "http://52.72.137.244:3000"
@@ -58,44 +59,29 @@ class ProductServiceTable:
         response = ProductServiceTable.SendToTable(body=body_to_send)
         if response.status_code == 201:
             data = response.json()
+            return data['id']
 
-            url = f"{self.BASE_URL}/queue/items/{data['id']}"
-            headers = {
-                "Content-Type": "application/json"
-            }
+            # url = f"{self.BASE_URL}/queue/items/{data['id']}"
+            # headers = {
+            #     "Content-Type": "application/json"
+            # }
 
-            try:
-                response = requests.get(url=url, headers=headers, timeout=10)
-                response.raise_for_status()
+            # try:
+            #     response = requests.get(url=url, headers=headers, timeout=10)
+            #     response.raise_for_status()
 
-                product_queue = response.json()
-                print("=======================PRODUCT QUEUE===========================")
-                print(product_queue['history'])
-
-                if len(product_queue['history']) == 0:
-
-                    for attemp in range(10):
-                        response = requests.get(url=url, headers=headers, timeout=10)
-                        response.raise_for_status()
-
-                        response.json()
-                        if len(response['history']) > 0:
-                            print(f"ATTEMP {attemp}")
-                            print(response)
-                            break
-
-                        print(f"ATTEMP {attemp}")
-                        print(response)
-
+            #     product_queue = response.json()
+            #     print("=======================PRODUCT QUEUE===========================")
+            #     print(product_queue['history'])
 
     
 
-                return response
-            except requests.RequestException as e:
-                print(f"Error: {e}")
-                return None
+            #     return response
+            # except requests.RequestException as e:
+            #     print(f"Error: {e}")
+            #     return None
 
-        return 'AAAAAAAAAAAAAAAAAAAA'
+        return None
 
 
     @staticmethod
@@ -112,8 +98,34 @@ class ProductServiceTable:
         except requests.RequestException as e:
             print(f"Error: {e}")
             return None
+    
+    def GetQueueProduct(self, product_id, client_id):
+        url = f"{self.BASE_URL}/queue/items/{product_id}"
+        headers = {
+            "Content-Type": "application/json"
+        }
 
+        try:
+            response = requests.get(url=url, headers=headers, timeout=10)
+            response.raise_for_status()
 
+            product_queue = response.json()
+            print("=======================PRODUCT QUEUE===========================")
+            print(product_queue)
+            history = product_queue['history'][-1] if len(product_queue['history']) > 0 else 0  
+            obj = {
+                "queue_order_id": product_id,
+                "sale_date": product_queue['createdAt'],
+                "status": product_queue['status'] if history == 0 else history,
+                "status_start_date": product_queue['createdAt'],
+                "status_finished_date": product_queue['createdAt'],
+                "client": client_id
+            }
+
+            return obj
+        except requests.RequestException as e:
+            print(f"Error: {e}")
+            return None
 
 
 #         {
