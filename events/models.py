@@ -42,12 +42,14 @@ class EventAndHashtag(models.Model):
         return f"Evento {self.fk_id_evento.nome} relacionado a hashtag {self.fk_id_hashtag.nome}"
 
 class Hashtag(models.Model):
+    id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=150)
 
     def __str__(self):
         return self.nome
     
 class Category(models.Model):
+    id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=50)
 
     def __str__(self):
