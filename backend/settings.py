@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-hkuw$e)8#uz8m6@w9^8w=_&tx1y0#kjx7zpg_)16znk2-5bu_i'
 
 #Gemini API Key
-GEMINI_APY_KEY= config("GEMINI_APY_KEY")
+GEMINI_APY_KEY= config("GEMINI_APY_KEY", default="")
 HOST_DB = config("POSTGRES_HOST", default="")
 
 # SECURITY WARNING: don't run with debug turned on in production!
