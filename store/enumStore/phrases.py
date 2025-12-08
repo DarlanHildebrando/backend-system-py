@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Phrases(Enum):
-   FP = "0"
+   CUSTOM = "0"
    F1 = "2"
    F2 = "1"
    F3 = "3"

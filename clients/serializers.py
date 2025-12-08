@@ -6,6 +6,7 @@ from .services import Profile
 from events.serializers import EventTicketSerializers
 from django.contrib.auth.hashers import make_password
 from accessibility.models import Accessibility_Type, Accessbility_Registration
+from store.serializers import SaleProfileSerializer
 from django.db import transaction
 import uuid
 
@@ -92,6 +93,7 @@ class RegisterCompletSerializer(serializers.Serializer):
 class GetClientProfileSerializer(serializers.ModelSerializer):
     disability_type = DisabilitySerializer()
     ticket = ClientTicketsSerializer(many=True, read_only=True)
+    sale_product = SaleProfileSerializer(many=True)
     
     class Meta:
         model = ClientProfile
@@ -102,6 +104,7 @@ class GetClientProfileSerializer(serializers.ModelSerializer):
                   "biografia",
                   "inklua_coins",
                   "notification",
+                  "sale_product",
                   "ticket",
                   "disability_type",]
         extra_kwargs = {

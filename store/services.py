@@ -5,6 +5,7 @@ from .enumStore.chassis import ChassisBox
 from .enumStore.phrases import Phrases
 from .enumStore.typography import Typographys
 
+import os
 import requests
 import uuid
 import json
@@ -56,10 +57,10 @@ class ProductServiceTable:
             "callbackUrl": "http://localhost:3333/callback"
         }
 
-        response = ProductServiceTable.SendToTable(body=body_to_send)
-        if response.status_code == 201:
-            data = response.json()
-            return data['id']
+        # response = ProductServiceTable.SendToTable(body=body_to_send)
+        # if response.status_code == 201:
+        #     data = response.json()
+        #     return data['id']
 
             # url = f"{self.BASE_URL}/queue/items/{data['id']}"
             # headers = {
@@ -80,8 +81,31 @@ class ProductServiceTable:
             # except requests.RequestException as e:
             #     print(f"Error: {e}")
             #     return None
+        base_dir = os.path.dirname(__file__)
+        mock_path = os.path.join(base_dir, "mock.json")
 
-        return None
+        with open(mock_path, "r", encoding='utf-8') as c:
+            data = json.load(c)
+            print("=============DATA============")  
+            data["payload"]["orderId"] = body_to_send["payload"]["orderId"]
+            data["payload"]["order"]["bloco1"]["cor"] = body_to_send["payload"]["order"]["bloco1"]["cor"]
+            data["payload"]["order"]["bloco1"]["lamina1"] = body_to_send["payload"]["order"]["bloco1"]["lamina1"]
+            data["payload"]["order"]["bloco1"]["lamina2"] = body_to_send["payload"]["order"]["bloco1"]["lamina2"]
+            data["payload"]["order"]["bloco1"]["lamina3"] = body_to_send["payload"]["order"]["bloco1"]["lamina3"]
+            data["payload"]["order"]["bloco1"]["padrao1"] = body_to_send["payload"]["order"]["bloco1"]["padrao1"]
+            data["payload"]["order"]["bloco1"]["padrao2"] = body_to_send["payload"]["order"]["bloco1"]["padrao2"]
+            data["payload"]["order"]["bloco1"]["padrao3"] = body_to_send["payload"]["order"]["bloco1"]["padrao3"]
+            print(data)
+            obj = {
+                "queue_order_id": data["payload"]["orderId"],
+                "sale_date": data['createdAt'],
+                "status": data['status'],
+                "status_start_date": data['createdAt'],
+                "status_finished_date": data['createdAt'],
+                "client": product.client,
+                "product": product
+            }
+        return obj
 
 
     @staticmethod

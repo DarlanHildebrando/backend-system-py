@@ -1,9 +1,15 @@
 from django.db import models
+from datetime import timedelta
+from django.utils import timezone
 import uuid
+
+
+def one_week_from_now():
+    return timezone.now() + timedelta(weeks=1)
 
 class ProductPhrase(models.TextChoices):
     noPhrase = 'NOPHRASE', 'No phrase'
-    personalized = 'FP', 'Personalized'
+    custom = 'CUSTOM', 'Custom'
     f1 = 'F1', 'Faça a diferença, inKlua!'
     f2 = 'F2', 'Todos merecem viver grandes experiências'
     f3 = 'F3', '#InklusaoParaTodos'
@@ -14,18 +20,18 @@ class ProductPhraseTyphografy(models.TextChoices):
     Pixelated = "PIXELATED", "Pixelated"
 
 class ProductIcon(models.TextChoices):
-    noIcon = 'NOICON', 'No Icon'
+    ban = 'BAN', 'Ban'
     ear = 'EAR', 'Ear'
     eye = 'EYE', 'Eye'
-    speechBubble = 'SPEECHBUBBLE', 'Speech Bubble'
+    messageCircle = 'MESSAGECIRCLE', 'Message Circle'
     brain = 'BRAIN', 'Brain'
-    wheelchair = 'WHEELCHAIR', 'Wheelchair'
+    accessibility = 'ACCESSIBILITY', 'accessibility'
     star = 'STAR', 'Star'
     gamepad = 'GAMEPAD', 'Gamepad'
-    diamond = 'DIAMOND', 'Diamond'
+    gem = 'GEM', 'Gem'
     heart = 'HEART', 'Heart'
     music = 'MUSIC', 'Music'
-    accessibility = 'ACCESSIBILITY', 'Accessibility'
+    # accessibility = 'ACCESSIBILITY', 'Accessibility'
     
 class ProductSize(models.TextChoices):
     small = 'SMALL', 'Small',
@@ -43,7 +49,7 @@ class ProductColor(models.TextChoices):
 
 class ProductName(models.TextChoices):
     inkluabottle = 'INKLUABOTTLE', 'InkluaBottle'
-    bracelet = 'BRACELET', 'Bracelet'
+    inkluabracelet = 'INKLUABRACELET', 'Bracelet'
 
 class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -64,11 +70,24 @@ class Product(models.Model):
 class SaleProduct(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     queue_order_id = models.CharField(max_length=255, editable=False)
-    sale_date = models.DateTimeField()
+    sale_date = models.DateTimeField(auto_now_add=True)
+    delivery_forecast = models.DateTimeField(default=one_week_from_now)
     status = models.CharField(max_length=100, null=False)   
     status_start_date = models.DateTimeField(null=True)
     status_finished_date = models.DateTimeField(null=True)
+    preparation = models.DateTimeField(null=True)
+    ready = models.DateTimeField(null=True)
+    delivered = models.DateTimeField(null=True)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
     client = models.ForeignKey(
         "clients.ClientProfile",
         on_delete=models.CASCADE,
         related_name="sale_product")
+
+class NotificationStore(models.Model):
+    id = models.UUIDField(primary_key=True, default= uuid.uuid4, editable=False)
+    sale = models.OneToOneField(SaleProduct, on_delete=models.CASCADE, related_name="notification")
+    # client = models.ForeignKey(
+    #     "clients.ClientProfile",
+    #     on_delete=models.CASCADE,
+    #     related_name="notification-store")
