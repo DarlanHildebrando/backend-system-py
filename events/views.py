@@ -10,6 +10,7 @@ from .models import Event, EventTicket
 from .serializers import EventSerializer, TicketSerializer
 from authentication.models import CustomUser
 from companies.serializers import EnterpriseProfileCompleteSerializer
+from django.db.models import Q
 
 class AccessibilityEventsView(APIView):
     permission_classes = [AllowAny]
@@ -28,7 +29,7 @@ class AccessibilityEventsView(APIView):
 
 class ReturnEventView(APIView):
     def get(self, request, id):
-        event = Event.objects.get(id=id)
+        event = Event.objects.get(slug=id)
         event_serializer = EventSerializer(event)
         enterprise_custom = CustomUser.objects.get(enterprise_profile=event_serializer.data["fk_empresa_id_empresa"])
         enterprise_serializer = EnterpriseProfileCompleteSerializer(enterprise_custom)

@@ -116,7 +116,7 @@ class Event(models.Model):
     )
 
     def __str__(self):
-        return f"Evento {self.nome} da empresa {self.fk_empresa_id_empresa.slug}; ID: {self.id}"
+        return f"Evento {self.slug} da empresa {self.fk_empresa_id_empresa.slug}; ID: {self.id}"
 
 class Event_Evaluation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
