@@ -10,6 +10,9 @@ class TicketSerializer(serializers.ModelSerializer):
             "id",
             "nome",
             "modalidade",
+            "valor_receber",
+            "valor_comprador",
+            "quantidade_max_venda",
             "data_inicio",
             "data_fim"
         ]
