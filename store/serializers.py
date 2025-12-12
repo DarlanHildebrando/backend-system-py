@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
         client = validated_data.pop("client")
         client_data = ClientProfile.objects.get(id=client.id)
         product_created = Product.objects.create(client=client_data, **validated_data)
-
+        
         return product_created
 
 class SaleSerializer(serializers.ModelSerializer):
