@@ -19,25 +19,34 @@ class ProductView(APIView):
                client_id = product.client
                product_id = ProductServiceTable().AssembleForTable(product)
             #    time.sleep(4)
-               
-            #    queue_product = ProductServiceTable().GetQueueProduct(product_id, client_id)
-            #    print("===============RETURNED================")
-            #    print(queue_product)
-               sale = SaleProduct.objects.create(**product_id)
-               print("========================SALEEEE=====================")
-               print(sale.__dict__)
-            #    print("=========================SALE=====================")
-            #    print(sale.__dict__)
-               notification = NotificationStore.objects.create(sale=sale)
-               print("====================NOTIFICATION================")
-               print(notification.__dict__)
+               queue_product = ProductServiceTable().GetQueueProduct(product_id, client_id)
+               sale = SaleProduct.objects.create(**queue_product, product_id=product.id)
+               NotificationStore.objects.create(sale=sale)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
     
-    # def get(self, request):
-    #     serializer
+    def patch(self, request, pk):
+        sale = get_object_or_404(SaleProduct, id=pk)
+
+        ProductServiceTable().GetQueueProduct(
+            sale.queue_order_id, sale.client.id, True
+            )
+        
+        atualized_sale = get_object_or_404(SaleProduct, id=pk)
+
+        return Response(atualized_sale)
+
+
 
 # class QueueOrder(APIView):
 #     def post(self, request, pk):
-#         sale = get_object_or_404(SaleProduct, )
+#         sale = get_object_or_404(SaleProduct, id=pk)
+
+#         queue_product = ProductServiceTable().GetQueueProduct(
+#             sale.queue_order_id, sale.client.id, True
+#             )
+#         print("================QUEUE PRODUCT==============")
+#         print(queue_product)
+
+#         return queue_product
