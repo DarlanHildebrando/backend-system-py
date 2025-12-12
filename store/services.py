@@ -63,7 +63,7 @@ class ProductServiceTable:
         response = ProductServiceTable.SendToTable(body=body_to_send)
         if response.status_code == 201:
             data = response.json()
-            self.OccupyPosition(data['id'], chassis.value)
+            # self.OccupyPosition(data['id'], chassis.value)
             return data['id']
 
             # url = f"{self.BASE_URL}/queue/items/{data['id']}"
