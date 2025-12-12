@@ -79,6 +79,7 @@ class SaleProduct(models.Model):
     ready = models.DateTimeField(null=True)
     delivered = models.DateTimeField(null=True)
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    position_table = models.IntegerField(null=True)
     client = models.ForeignKey(
         "clients.ClientProfile",
         on_delete=models.CASCADE,
@@ -91,3 +92,13 @@ class NotificationStore(models.Model):
     #     "clients.ClientProfile",
     #     on_delete=models.CASCADE,
     #     related_name="notification-store")
+
+class Stock(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False),
+    product = models.CharField(max_length=100, choices=ProductName.choices),
+    colum = models.CharField(max_length=5)
+    floor = models.CharField(max_length=5),
+    position = models.CharField(max_length=10)
+    status = models.CharField(max_length=100),
+    quantity_min = models.IntegerField(null=True),
+    quantity = models.IntegerField(null=True)

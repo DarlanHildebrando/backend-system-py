@@ -6,6 +6,7 @@ from .enumStore.phrases import Phrases
 from .enumStore.typography import Typographys
 
 from .models import SaleProduct
+from django.shortcuts import get_object_or_404
 
 import os
 import requests
@@ -62,6 +63,7 @@ class ProductServiceTable:
         response = ProductServiceTable.SendToTable(body=body_to_send)
         if response.status_code == 201:
             data = response.json()
+            self.OccupyPosition(data['id'], chassis.value)
             return data['id']
 
             # url = f"{self.BASE_URL}/queue/items/{data['id']}"
@@ -124,7 +126,7 @@ class ProductServiceTable:
         except requests.RequestException as e:
             print(f"Error: {e}")
             return None
-    
+        
     def GetQueueProduct(self, product_id, client_id, flag=False):
         url = f"{self.BASE_URL}/queue/items/{product_id}"
         headers = {
@@ -158,8 +160,51 @@ class ProductServiceTable:
         except requests.RequestException as e:
             print(f"Error: {e}")
             return None
+        
+    def OccupyPosition(self, order_id, color):
+        print("color")
+        print(color)
+        pos = 3
+        url = f"{self.BASE_URL}/estoque/{pos}"
+        headers = {
+            "Content-Type": "application/json"
+        }
 
+        status_map = {
+            1: "preto",
+            3: "azul"
+        }
 
+        status_str = status_map.get(color, "azul")
+
+        body = {
+            "cor": status_str,
+            "op": order_id
+        }
+
+        print("=======ORDER ID==========")
+        print(order_id)
+
+        saleAt = SaleProduct.objects.filter(queue_order_id=order_id).update(position_table=pos)
+        print("===========oer===========")
+        print(order_id)
+        prod_queue = get_object_or_404(SaleProduct, queue_order_id=str(order_id))
+        print(f"SALE AT: {prod_queue}")
+        response = requests.put(url=url, json=body, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        return response
+    
+    def ReleasePosition(self, pos):
+        url = f"{self.BASE_URL}/estoque/{pos}"
+        headers = {
+            "Content-Type": "application/json"
+        } 
+
+        response = requests.delete(url=url, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        return response
 #         {
 #   "codigoProduto": 1,
 #   "bloco1": {
